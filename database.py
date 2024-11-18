@@ -30,9 +30,20 @@ def check_login(username, password):
     return False
 
 def create_account(username, password):
-    password_hash = bcrypt.hashpw(password.encode(), bcrypt.gensalt()).decode()
     conn = get_connection()
     cursor = conn.cursor()
+
+    # Check if the username already exists
+    cursor.execute("SELECT COUNT(*) FROM users WHERE username = %s", (username,))
+    result = cursor.fetchone()
+    if result[0] > 0:
+        conn.close()
+        raise ValueError(f"Username '{username}' already exists. Please choose a different username.")
+
+    # Hash the password
+    password_hash = bcrypt.hashpw(password.encode(), bcrypt.gensalt()).decode()
+
+    # Insert the new user
     cursor.execute("INSERT INTO users (username, password_hash) VALUES (%s, %s)", (username, password_hash))
     conn.commit()
     conn.close()
