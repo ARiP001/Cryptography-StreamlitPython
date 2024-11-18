@@ -1,4 +1,4 @@
-streamlit==1.15.0
+streamlit==1.40.1
 Pillow==8.4.0
 bcrypt==4.0.1
 stegano==0.10.0
