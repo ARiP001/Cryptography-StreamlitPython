@@ -1,5 +1,5 @@
 streamlit==1.40.1
-Pillow==8.4.0
+Pillow==10.4.0
 bcrypt==4.0.1
 stegano==0.10.0
 psycopg2-binary
