@@ -2,5 +2,5 @@ streamlit==1.40.1
 Pillow==11.0.0
 bcrypt==4.0.1
 stegano==0.8.5
-mysql-connector-python  
+psycopg2-binary
 
