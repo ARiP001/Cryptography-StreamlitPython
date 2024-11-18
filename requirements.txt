@@ -1,7 +1,7 @@
-streamlit==1.40.1
+streamlit==1.15.0
 Pillow==8.4.0
 bcrypt==4.0.1
-stegano==0.8.5
+stegano==0.10.0
 psycopg2-binary
 pycryptodome==3.18.0
 numpy
