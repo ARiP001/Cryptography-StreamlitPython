@@ -24,29 +24,32 @@ def login_page():
 
     
 def registration_page():
-    st.title("Daftar Akun Baru")
+    st.title("Create a New Account")
     with st.form(key="register_form"):
-        username = st.text_input("Username Baru")
-        password = st.text_input("Password Baru", type="password")
-        confirm_password = st.text_input("Ulangi Password Baru", type="password")
-        submit_button = st.form_submit_button("Daftar")
+        username = st.text_input("New Username")
+        password = st.text_input("New Password", type="password")
+        confirm_password = st.text_input("Confirm Password", type="password")
+        submit_button = st.form_submit_button("Register")
 
     if submit_button:
         if username and password:
             if password != confirm_password:
-                st.error("Password dan konfirmasi password tidak sama.")
+                st.error("Password and confirmation password do not match.")
             elif len(password) < 8 or len(password) > 20:
-                st.error("Password harus memiliki panjang 8-20 karakter.")
+                st.error("Password must be between 8-20 characters.")
             elif not re.search(r'\d', password):
-                st.error("Password harus mengandung setidaknya satu angka.")
+                st.error("Password must contain at least one number.")
             elif not re.search(r'[!@#$%^&*(),.?\":{}|<>]', password):
-                st.error("Password harus mengandung setidaknya satu simbol unik (!@#$%^&*(),.?\":{}|<>).")
+                st.error("Password must contain at least one special character (!@#$%^&*(),.?\":{}|<>).")
             else:
-                create_account(username, password)
-                st.success("Akun berhasil dibuat! Silakan login.")
-                st.session_state["page"] = "login"
+                success, message = create_account(username, password)
+                if success:
+                    st.success(message)
+                    st.session_state["page"] = "login"
+                else:
+                    st.error(message)
         else:
-            st.warning("Mohon lengkapi semua kolom.")
+            st.warning("Please complete all fields.")
 
-    if st.button("Kembali ke Login"):
+    if st.button("Back to Login"):
         st.session_state["page"] = "login"
