@@ -13,14 +13,20 @@ def steganography_app():
         
         if uploaded_image and secret_message:
             try:
-                # Convert the uploaded file to a PIL Image
+                # Open the uploaded file as an image
                 img = Image.open(uploaded_image).convert("RGB")  # Convert to RGB for compatibility
-                encoded_image = lsb.hide(img, secret_message)  # Hide the secret message
-                encoded_image_path = "encoded_image.png"
-                encoded_image.save(encoded_image_path, format="PNG")  # Save as PNG
-                st.image(encoded_image, caption="Gambar dengan Pesan Tersembunyi")  # Display the encoded image
                 
-                # Provide download button for the encoded image
+                # Perform steganography to hide the message
+                encoded_image = lsb.hide(img, secret_message)
+                
+                # Save the encoded image to a file
+                encoded_image_path = "encoded_image.png"
+                encoded_image.save(encoded_image_path, format="PNG")
+                
+                # Display the encoded image
+                st.image(encoded_image, caption="Gambar dengan Pesan Tersembunyi")
+
+                # Provide a download button for the encoded image
                 with open(encoded_image_path, "rb") as file:
                     st.download_button("Unduh Gambar Terenkripsi", file.read(), "encrypted_image.png")
             except Exception as e:
@@ -31,9 +37,12 @@ def steganography_app():
         uploaded_image = st.file_uploader("Unggah Gambar dengan Pesan Tersembunyi (PNG, JPG, JPEG, WEBP):", type=["png", "jpg", "jpeg", "webp"])
         if uploaded_image:
             try:
-                # Convert the uploaded file to a PIL Image
+                # Open the uploaded file as an image
                 img = Image.open(uploaded_image)
-                decoded_message = lsb.reveal(img)  # Reveal the hidden message
+                
+                # Extract the hidden message
+                decoded_message = lsb.reveal(img)
+                
                 if decoded_message:
                     st.success(f"Pesan Rahasia: {decoded_message}")
                 else:
