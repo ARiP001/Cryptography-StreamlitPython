@@ -4,7 +4,7 @@ import streamlit as st
 
 # Access secrets
 db_host = st.secrets["general"]["DB_HOST"]
-db_port = st.secrets["general"]["DB_PORT"]
+#db_port = st.secrets["general"]["DB_PORT"]
 db_name = st.secrets["general"]["DB_NAME"]
 db_user = st.secrets["general"]["DB_USER"]
 db_password = st.secrets["general"]["DB_PASSWORD"]
@@ -12,7 +12,7 @@ db_password = st.secrets["general"]["DB_PASSWORD"]
 # Establish a connection
 connection = mysql.connector.connect(
     host=db_host,
-    port=db_port,
+    #port=db_port,
     user=db_user,
     password=db_password,
     database=db_name
