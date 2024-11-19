@@ -1,52 +1,60 @@
-import psycopg2
-import bcrypt
-import streamlit as st
+from Crypto.PublicKey import RSA
+from Crypto.Cipher import PKCS1_OAEP
+import base64
 
-# Access secrets
-db_host = st.secrets["general"]["DB_HOST"]
-db_port = st.secrets["general"]["DB_PORT"]
-db_name = st.secrets["general"]["DB_NAME"]
-db_user = st.secrets["general"]["DB_USER"]
-db_password = st.secrets["general"]["DB_PASSWORD"]
+# Caesar Cipher
+def caesar_encrypt(text, shift):
+    result = ""
+    for char in text:
+        if char.isalpha():
+            shift_base = 65 if char.isupper() else 97
+            result += chr((ord(char) - shift_base + shift) % 26 + shift_base)
+        else:
+            result += char
+    return result
 
-def get_connection():
-    return psycopg2.connect(
-        host=db_host,
-        port=db_port,
-        dbname=db_name,
-        user=db_user,
-        password=db_password
-    )
+def caesar_decrypt(text, shift):
+    return caesar_encrypt(text, -shift)
 
-def check_login(username, password):
-    conn = get_connection()
-    cursor = conn.cursor()
-    cursor.execute("SELECT password_hash FROM users WHERE username = %s", (username,))
-    user = cursor.fetchone()
-    conn.close()
+# RSA
+def generate_rsa_keys():
+    key = RSA.generate(2048)
+    private_key = key.export_key().decode()
+    public_key = key.publickey().export_key().decode()
+    return public_key, private_key
 
-    if user and bcrypt.checkpw(password.encode(), user[0].encode()):
-        return True
-    return False
-
-def create_account(username, password):
+def rsa_encrypt(message, public_key_pem):
     try:
-        conn = get_connection()
-        cursor = conn.cursor()
+        rsa_key = RSA.import_key(public_key_pem)
+        cipher = PKCS1_OAEP.new(rsa_key)
+        max_message_length = (rsa_key.size_in_bits() // 8) - 42  # OAEP padding uses 42 bytes
 
-        # Check if the username already exists
-        cursor.execute("SELECT COUNT(*) FROM users WHERE username = %s", (username,))
-        result = cursor.fetchone()
-        if result[0] > 0:
-            return False, f"Username '{username}' already exists. Please choose a different username."
+        # Validasi panjang pesan
+        if len(message.encode()) > max_message_length:
+            return f"Pesan terlalu panjang untuk dienkripsi. Maksimum (256-42 = 214) karakter."
 
-        # Hash the password
-        password_hash = bcrypt.hashpw(password.encode(), bcrypt.gensalt()).decode()
-
-        # Insert the new user
-        cursor.execute("INSERT INTO users (username, password_hash) VALUES (%s, %s)", (username, password_hash))
-        conn.commit()
-        conn.close()
-        return True, "Account successfully created!"
+        encrypted_message = cipher.encrypt(message.encode())
+        return base64.b64encode(encrypted_message).decode()
     except Exception as e:
-        return False, "An unexpected error occurred. Please try again later."
+        return f"Kesalahan dalam enkripsi: {e}"
+
+
+def rsa_decrypt(encrypted_message, private_key_pem):
+    try:
+        rsa_key = RSA.import_key(private_key_pem)  # Import private key dari input
+        cipher = PKCS1_OAEP.new(rsa_key)
+        decrypted_message = cipher.decrypt(base64.b64decode(encrypted_message))
+        return decrypted_message.decode()
+    except Exception as e:
+        raise ValueError(f"Kesalahan dalam dekripsi: {e}")
+
+# Super Encryption
+def super_encrypt(text, caesar_key, rsa_public_key):
+    encrypted_caesar = caesar_encrypt(text, caesar_key)
+    encrypted_rsa = rsa_encrypt(encrypted_caesar, rsa_public_key)
+    return encrypted_rsa
+
+def super_decrypt(encrypted_text, caesar_key, rsa_private_key):
+    decrypted_rsa = rsa_decrypt(encrypted_text, rsa_private_key)
+    decrypted_caesar = caesar_decrypt(decrypted_rsa, caesar_key)
+    return decrypted_caesar
