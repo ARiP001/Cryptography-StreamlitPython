@@ -12,7 +12,7 @@ def decryption_menu():
     st.markdown("[akses arsip di sini](https://drive.google.com/drive/folders/1U9oEdCKqGX-gYcX0S1awwWacz8aSVt8F?usp=sharing)", unsafe_allow_html=True)
 
     st.text("Pada Arsip tersebut ternyata terdapat tulisan (unlock: dua bulan terakhir gabung tanpa spasi)")
-    st.text("Note : hanya gunakan menu dekripsi clue untuk menyelesaikan quest ini")
+    st.text("Note : 1) hanya gunakan menu dekripsi clue untuk menyelesaikan quest ini. 2)disarankan menyiapkan notepad atau software catatan lainnya")
 
 
     st.header("Menu Dekripsi")
