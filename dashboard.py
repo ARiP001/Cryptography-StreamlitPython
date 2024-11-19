@@ -15,7 +15,7 @@ def decryption_menu():
     st.text("Note : 1) hanya gunakan menu dekripsi clue untuk menyelesaikan quest ini. 2)disarankan menyiapkan notepad atau software catatan lainnya")
 
 
-    st.header("Menu Dekripsi")
+    st.subheader("Menu Dekripsi")
     menu = st.radio("Pilih Menu Dekripsi", ["Dekripsi Teks", "Dekripsi Gambar", "Dekripsi File"])
 
     if menu == "Dekripsi Teks":
@@ -44,7 +44,7 @@ def text_decryption_menu():
     sub_menu = st.radio("Pilih Metode Dekripsi", ["Caesar Cipher", "RSA", "Super Dekripsi"])
 
     if sub_menu == "Caesar Cipher":
-        st.header("Caesar Cipher")
+        st.subheader("Caesar Cipher")
         encrypted_text = st.text_input("Masukkan Teks Terenkripsi")
         key = st.number_input("Masukkan Key (1-25)", min_value=1, max_value=25, step=1)
         
@@ -56,7 +56,7 @@ def text_decryption_menu():
                 st.warning("Masukkan teks untuk diproses.")
 
     elif sub_menu == "RSA":
-        st.header("RSA")
+        st.subheader("RSA")
         encrypted_text = st.text_input("Masukkan Teks Terenkripsi")
         private_key_input = st.text_area("Masukkan Private Key (PEM format)")
 
@@ -71,7 +71,7 @@ def text_decryption_menu():
                 st.warning("Masukkan teks terenkripsi dan private key untuk melanjutkan.")
 
     elif sub_menu == "Super Dekripsi":
-        st.header("Super Dekripsi")
+        st.subheader("Super Dekripsi")
         caesar_key = st.number_input("Masukkan Key Caesar (1-25)", min_value=1, max_value=25, step=1)
         private_key_input = st.text_area("Masukkan Private Key (PEM format)")
         
@@ -89,11 +89,11 @@ def text_decryption_menu():
 
 # Encryption Menu for Text
 def text_encryption_menu():
-    st.header("Enkripsi Teks")
+    st.subheader("Enkripsi Teks")
     sub_menu = st.radio("Pilih Metode Enkripsi", ["Caesar Cipher", "RSA", "Super Enkripsi"])
 
     if sub_menu == "Caesar Cipher":
-        st.header("Caesar Cipher")
+        st.subheader("Caesar Cipher")
         text = st.text_input("Masukkan Teks")
         key = st.number_input("Masukkan Key (1-25)", min_value=1, max_value=25, step=1)
         
@@ -105,7 +105,7 @@ def text_encryption_menu():
                 st.warning("Masukkan teks untuk diproses.")
 
     elif sub_menu == "RSA":
-        st.header("RSA")
+        st.subheader("RSA")
         if "public_key" not in st.session_state or "private_key" not in st.session_state:
             public_key, private_key = generate_rsa_keys()
             st.session_state["public_key"] = public_key
@@ -126,7 +126,7 @@ def text_encryption_menu():
                 st.warning("Masukkan teks untuk dienkripsi!")
 
     elif sub_menu == "Super Enkripsi":
-        st.header("Super Enkripsi")
+        st.subheader("Super Enkripsi")
         caesar_key = st.number_input("Masukkan Key Caesar (1-25)", min_value=1, max_value=25, step=1)
         
         if "public_key" not in st.session_state or "private_key" not in st.session_state:
@@ -151,7 +151,7 @@ def text_encryption_menu():
 # File Encryption Menu (Now only for encryption, no radio)
 
 def file_encryption_menu():
-    st.header("Enkripsi File dengan AES")
+    st.subheader("Enkripsi File dengan AES")
 
     key = st.text_input("Masukkan Key AES (16, 24, atau 32 karakter)", type="password", key="aes_key_input")
 
@@ -188,7 +188,7 @@ def file_encryption_menu():
 
 # File Decryption Menu
 def file_decryption_menu():
-    st.header("Dekripsi File dengan AES")
+    st.subheader("Dekripsi File dengan AES")
 
     key = st.text_input("Masukkan Key AES (16, 24, atau 32 karakter)", type="password", key="aes_key_input")
 
