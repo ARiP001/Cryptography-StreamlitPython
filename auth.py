@@ -3,6 +3,7 @@ import re
 from database import check_login, create_account
 
 def login_page():
+    st.title("SELAMAT DATANG DI WEBSITE KRIPTOGAMEFI")
     st.title("Login")
     with st.form(key="login_form"):
         username = st.text_input("Username")
@@ -24,10 +25,11 @@ def login_page():
 
     
 def registration_page():
-    st.title("Create a New Account")
+    st.title("SELAMAT DATANG DI WEBSITE KRIPTOGAMEFI")
+    st.title("Register")
     with st.form(key="register_form"):
         username = st.text_input("New Username")
-        password = st.text_input("New Password", type="password")
+        password = st.text_input("New Password (terdiri dari 8-20 char, wajib ada angka dan symbol)", type="password")
         confirm_password = st.text_input("Confirm Password", type="password")
         submit_button = st.form_submit_button("Register")
 
