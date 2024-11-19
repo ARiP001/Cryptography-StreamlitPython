@@ -27,7 +27,8 @@ def decryption_menu():
 
 # Encryption Menu using radio
 def encryption_menu():
-    st.header("Menu Enkripsi")
+    st.header("Buat Clue")
+    st.text("Menu ini hanya digunakan oleh developer dalam membuat clue game, jadi jika kamu bukan developer fitur ini tidak perlu digunakan")
     menu = st.radio("Pilih Menu Enkripsi", ["Enkripsi Teks", "Enkripsi Gambar", "Enkripsi File"])
 
     if menu == "Enkripsi Teks":
